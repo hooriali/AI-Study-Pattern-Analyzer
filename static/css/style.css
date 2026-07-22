@@ -1,0 +1,180 @@
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+body {
+    background-color: #f8f9fa;
+    color: #212529;
+    font-size: 0.95rem;
+}
+
+/* ── Navbar ───────────────────────────────────────────────────────────────── */
+.navbar {
+    box-shadow: 0 1px 3px rgba(0,0,0,.12);
+}
+
+.navbar-brand {
+    font-size: 1rem;
+    letter-spacing: 0.2px;
+}
+
+.nav-link {
+    font-size: 0.88rem;
+    padding: 0.4rem 0.85rem !important;
+    border-radius: 6px;
+    transition: background 0.15s;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.nav-link.active {
+    background: rgba(255,255,255,0.15);
+    font-weight: 600;
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────────── */
+.card {
+    border-radius: 12px;
+    transition: box-shadow 0.15s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,.08) !important;
+}
+
+/* stat cards on dashboard */
+.stat-card .stat-value {
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #212529;
+}
+
+.stat-card .stat-label {
+    font-size: 0.78rem;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-top: 4px;
+}
+
+/* ── Tables ───────────────────────────────────────────────────────────────── */
+.table th {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+}
+
+.table td {
+    font-size: 0.9rem;
+    vertical-align: middle;
+}
+
+/* ── Forms ────────────────────────────────────────────────────────────────── */
+.form-label {
+    font-size: 0.88rem;
+    margin-bottom: 5px;
+}
+
+.form-control, .form-select {
+    font-size: 0.9rem;
+    border-color: #dee2e6;
+    border-radius: 8px;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #6c757d;
+    box-shadow: 0 0 0 0.2rem rgba(108,117,125,.15);
+}
+
+.form-text {
+    font-size: 0.78rem;
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────────── */
+.btn {
+    border-radius: 8px;
+    font-size: 0.88rem;
+}
+
+.btn-lg {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.4rem;
+}
+
+/* ── Badges ───────────────────────────────────────────────────────────────── */
+.badge {
+    font-weight: 500;
+    font-size: 0.78rem;
+}
+
+/* ── Alerts ───────────────────────────────────────────────────────────────── */
+.alert {
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+/* ── Insights list ────────────────────────────────────────────────────────── */
+.insight-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f3f5;
+    font-size: 0.91rem;
+    line-height: 1.5;
+}
+
+.insight-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* ── Prediction result ────────────────────────────────────────────────────── */
+.prediction-card {
+    border-left: 4px solid transparent;
+    border-radius: 12px;
+}
+
+.prediction-card.productive {
+    border-left-color: #2d6a4f;
+    background: #f0faf5;
+}
+
+.prediction-card.not-productive {
+    border-left-color: #e76f51;
+    background: #fff8f6;
+}
+
+/* ── Chart images ─────────────────────────────────────────────────────────── */
+.chart-card img {
+    border-radius: 6px;
+}
+
+/* ── Hero section on home ─────────────────────────────────────────────────── */
+.hero-icon {
+    font-size: 7rem;
+    color: #dee2e6;
+    line-height: 1;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+footer {
+    font-size: 0.78rem;
+    color: #adb5bd;
+    margin-top: 3rem;
+    padding: 1.5rem 0;
+}
+
+/* ── Progress bars (feature importance) ──────────────────────────────────── */
+.progress {
+    border-radius: 99px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    border-radius: 99px;
+}
+
+/* ── Responsive tweaks ────────────────────────────────────────────────────── */
+@media (max-width: 576px) {
+    .stat-card .stat-value { font-size: 1.5rem; }
+    .hero-icon { font-size: 4rem; }
+}
