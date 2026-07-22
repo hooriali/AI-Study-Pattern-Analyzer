@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}Home — Study Analyzer{% endblock %}
+
+{% block content %}
+
+{# ── Hero ── #}
+<div class="row align-items-center py-4 mb-2">
+    <div class="col-md-8">
+        <h1 class="fw-bold mb-3" style="font-size:2rem; line-height:1.25;">
+            Track your study habits.<br>
+            <span style="color:#6c757d;">Understand what actually works.</span>
+        </h1>
+        <p class="text-muted mb-4" style="font-size:1.05rem; max-width:480px;">
+            Log study sessions, see patterns in your data, and get
+            ML-powered predictions on when you're most productive.
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ url_for('log_session') }}" class="btn btn-dark btn-lg">
+                <i class="bi bi-plus-circle me-1"></i> Log a Session
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary btn-lg">
+                <i class="bi bi-bar-chart-line me-1"></i> Dashboard
+            </a>
+        </div>
+    </div>
+    <div class="col-md-4 text-center mt-4 mt-md-0">
+        <i class="bi bi-graph-up-arrow hero-icon"></i>
+    </div>
+</div>
+
+{# ── Feature cards ── #}
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-4 px-4">
+                <i class="bi bi-pencil-square fs-3 text-secondary mb-3 d-block"></i>
+                <h6 class="fw-bold">Log Sessions</h6>
+                <p class="text-muted small mb-0">
+                    Record subject, duration, mood, and focus level
+                    for every study block you do.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-4 px-4">
+                <i class="bi bi-bar-chart-line fs-3 text-secondary mb-3 d-block"></i>
+                <h6 class="fw-bold">Analyze Patterns</h6>
+                <p class="text-muted small mb-0">
+                    Charts show your study hours, focus trends, and
+                    which times of day you perform best.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body py-4 px-4">
+                <i class="bi bi-cpu fs-3 text-secondary mb-3 d-block"></i>
+                <h6 class="fw-bold">ML Predictions</h6>
+                <p class="text-muted small mb-0">
+                    A Random Forest classifier predicts how productive
+                    your next session will be before you start.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# ── Recent sessions ── #}
+{% if session_count > 0 %}
+<div class="d-flex justify-content-between align-items-center mb-3 mt-2">
+    <h6 class="fw-bold mb-0">Recent Sessions</h6>
+    <span class="text-muted small">{{ session_count }} total</span>
+</div>
+<div class="card border-0 shadow-sm mb-3">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Duration</th>
+                    <th>Mood</th>
+                    <th>Focus</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in recent_sessions %}
+                <tr>
+                    <td><span class="badge bg-secondary">{{ s['subject'] }}</span></td>
+                    <td class="text-muted">{{ s['date'] }}</td>
+                    <td>{{ s['duration'] }}h</td>
+                    <td>
+                        <span class="text-warning">{{ '★' * s['mood'] }}{{ '☆' * (5 - s['mood']) }}</span>
+                    </td>
+                    <td>
+                        <span class="fw-semibold {% if s['focus'] >= 4 %}text-success{% elif s['focus'] >= 3 %}text-warning{% else %}text-danger{% endif %}">
+                            {{ s['focus'] }}/5
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<a href="{{ url_for('sessions') }}" class="btn btn-sm btn-outline-dark">
+    View all sessions <i class="bi bi-arrow-right ms-1"></i>
+</a>
+{% else %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body text-center py-5">
+        <i class="bi bi-journal-plus fs-1 text-muted mb-3 d-block"></i>
+        <p class="text-muted mb-3">No sessions yet. Start by logging your first one.</p>
+        <a href="{{ url_for('log_session') }}" class="btn btn-dark">
+            <i class="bi bi-plus-circle me-1"></i> Log First Session
+        </a>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

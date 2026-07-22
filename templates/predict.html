@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Predict Session — Study Analyzer{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-5">
+
+        <div class="mb-4">
+            <h3 class="fw-bold mb-1">Predict a Session</h3>
+            <p class="text-muted small mb-0">
+                Describe what you're planning — the model will predict
+                whether it's likely to be productive (focus &ge; 4).
+            </p>
+        </div>
+
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('predict_session') }}">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Subject</label>
+                        <input type="text" name="subject" class="form-control"
+                               placeholder="e.g. Calculus"
+                               list="subject-suggestions" required>
+                        <datalist id="subject-suggestions">
+                            {% for s in subjects %}
+                            <option value="{{ s }}">
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Planned Start Time</label>
+                        <input type="time" name="start_time" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Expected Mood</label>
+                        <select name="mood" class="form-select" required>
+                            <option value="" disabled selected>How are you feeling?</option>
+                            <option value="1">1 — Terrible</option>
+                            <option value="2">2 — Low</option>
+                            <option value="3">3 — Okay</option>
+                            <option value="4">4 — Good</option>
+                            <option value="5">5 — Great</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Planned Duration (hours)</label>
+                        <input type="number" name="duration" class="form-control"
+                               min="0.25" max="12" step="0.25"
+                               placeholder="e.g. 1.5" required>
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-dark">
+                            <i class="bi bi-lightning-charge me-1"></i> Run Prediction
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {# ── Result ── #}
+        {% if result %}
+            {% if result.get('error') %}
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle me-2"></i>{{ result.error }}
+            </div>
+            {% else %}
+            <div class="card prediction-card border-0 shadow-sm
+                        {% if result.productive %}productive{% else %}not-productive{% endif %}">
+                <div class="card-body p-4">
+
+                    <div class="d-flex align-items-start gap-3 mb-3">
+                        <span style="font-size:2rem; line-height:1;">
+                            {% if result.productive %}✅{% else %}⚠️{% endif %}
+                        </span>
+                        <div>
+                            <div class="fw-bold fs-5 mb-0">{{ result.prediction }}</div>
+                            <div class="text-muted small">
+                                {{ result.confidence_label }} &mdash; {{ result.confidence }}% certainty
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if result.productive_prob is not none %}
+                    <div class="d-flex justify-content-between mb-1" style="font-size:0.82rem;">
+                        <span class="text-muted">Productive probability</span>
+                        <span class="fw-semibold">{{ result.productive_prob }}%</span>
+                    </div>
+                    <div class="progress mb-3" style="height:8px;">
+                        <div class="progress-bar
+                            {% if result.productive_prob >= 70 %}bg-success
+                            {% elif result.productive_prob >= 40 %}bg-warning
+                            {% else %}bg-danger{% endif %}"
+                            style="width:{{ result.productive_prob }}%">
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <p class="text-muted small mb-0">
+                        {% if result.productive %}
+                            Conditions look good — go for it.
+                        {% else %}
+                            Consider shifting to a different time or checking
+                            <a href="{{ url_for('dashboard') }}">your schedule recommendations</a>.
+                        {% endif %}
+                    </p>
+
+                </div>
+            </div>
+            {% endif %}
+        {% endif %}
+
+        <p class="text-muted text-center mt-3" style="font-size:0.78rem;">
+            Predictions use a Random Forest model trained on your logged sessions.
+            <a href="{{ url_for('dashboard') }}">View model details →</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
